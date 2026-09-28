@@ -10,6 +10,18 @@ This repository contains the completed project assignments for the Polytechnic I
 
 ---
 
+## Project Structure
+
+```text
+cryptography-network-security-exam/
+├── .gitignore             # Excludes secret.key from version control
+├── README.md              # Project documentation and execution instructions
+├── filter_tests.md        # Section 3: Firewall rules and lab test logs
+├── risk_assessment.md     # Section 1: Asset identification and risk matrix
+└── security_toolkit.py    # Section 2: Python encryption and integrity script
+```
+
+
 ## Installation & Environment Setup
 
 To run the Python security toolkit locally, follow these steps:
