@@ -20,16 +20,16 @@
 ## b. Risk Ranking and Justification
 
 1. **Risk 1: Weak Staff Passwords**
-   * **Likelihood:** High — The IT team has already observed repeated external connection attempts, meaning attackers are actively trying to gain entry.
-   * **Impact:** High — If a credential is compromised, the attacker can fully access, modify, or steal confidential student database records.
+   * **Likelihood:** High: The IT team has already observed repeated external connection attempts, meaning attackers are actively trying to gain entry.
+   * **Impact:** High: If a credential is compromised, the attacker can fully access, modify, or steal confidential student database records.
 
 2. **Risk 2: Guest Network Access to the Records Server**
-   * **Likelihood:** Medium — It requires a malicious actor to physically be within range of the campus guest Wi-Fi or breach it remotely.
-   * **Impact:** High — Direct server access bypasses external firewalls, allowing a local attacker to attempt exploits directly against the core system hosting data.
+   * **Likelihood:** Medium: It requires a malicious actor to physically be within range of the campus guest Wi-Fi or breach it remotely.
+   * **Impact:** High: Direct server access bypasses external firewalls, allowing a local attacker to attempt exploits directly against the core system hosting data.
 
 3. **Risk 3: Unencrypted Inter-Campus File Transfers**
-   * **Likelihood:** Medium — An attacker must be positioned along the specific network path between the two campuses to intercept traffic.
-   * **Impact:** Medium — While it exposes files mid-transit, it does not give the attacker a direct doorway into the entire underlying server infrastructure.
+   * **Likelihood:** Medium: An attacker must be positioned along the specific network path between the two campuses to intercept traffic.
+   * **Impact:** Medium: While it exposes files mid-transit, it does not give the attacker a direct doorway into the entire underlying server infrastructure.
 
 
 ## c. Recommended Controls
