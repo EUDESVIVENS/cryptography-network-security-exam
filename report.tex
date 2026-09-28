@@ -86,6 +86,21 @@ To secure raw local assets, a custom Python implementation utilizes symmetric en
     \item \textbf{Fault Resilience:} Fully encapsulated with robust \texttt{try-except} error-interception pathways to catch missing assets gracefully without crashing.
 \end{itemize}
 
+\subsection{System Testing and Verification Evidence}
+The script execution log below serves as technical evidence validating that the tool loads or generates cryptographic keys, computes accurate file signatures, transforms data into encrypted blocks, and effectively confirms data payload integrity.
+
+\begin{lstlisting}[style=mystyle, caption=Python Security Toolkit Verification Log]
+--- Polytechnic Security Toolkit ---
+[!] New key generated and saved locally to 'secret.key'. Do not upload this file to GitHub!
+[!] Created dummy test file 'student_records.csv'
+[*] Original SHA-256: a8b7ceb5e14a52856decd5414720709a847bf93b76266cb39df00bdeee1b71f9
+[+] File 'student_records.csv' successfully encrypted to 'student_records.enc'.
+[+] File 'student_records.enc' successfully decrypted to 'student_records_decrypted.csv'.
+[*] Decrypted SHA-256: a8b7ceb5e14a52856decd5414720709a847bf93b76266cb39df00bdeee1b71f9
+[+] Integrity Verification: Success! Files match perfectly.
+\end{lstlisting}
+
+\newpage
 \section{Traffic Filtering Configurations and Test Logs (Question 5.c)}
 Firewall control parameters were constructed and verified inside the laboratory environment using the standard Linux \texttt{iptables} architecture.
 
@@ -95,13 +110,13 @@ Firewall control parameters were constructed and verified inside the laboratory 
 iptables -P INPUT DROP
 iptables -P FORWARD DROP
 
-# Block untrusted guest networks from reaching records spaces
+% Block untrusted guest networks from reaching records spaces
 iptables -A INPUT -s 192.168.50.0/24 -j DROP
 
-# Explicitly permit authorized staff subnets onto Secure Port 443
+% Explicitly permit authorized staff subnets onto Secure Port 443
 iptables -A INPUT -s 10.0.10.0/24 -p tcp --dport 443 -j ACCEPT
 
-# Universal block on other traffic attempting access to port 443
+% Universal block on other traffic attempting access to port 443
 iptables -A INPUT -p tcp --dport 443 -j DROP
 \end{lstlisting}
 
