@@ -1,0 +1,118 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+% Code snippet styling configuration
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0,0,0.8}
+\definecolor{backcolour}{rgb}{0.96,0.96,0.94}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{codeblue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{magenta},
+    basicstyle=\ttfamily\small,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\title{\textbf{Cryptography and Network Security Technical Report} \\
+\large ULK Polytechnic Institute — Security Assessment and Implementation}
+\author{\textbf{Your Name} \\ Student ID: \textbf{Your ID}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Introduction and Project Setup}
+This technical report details the comprehensive security infrastructure designed and evaluated for the ULK Polytechnic Institute's central student records system. All source materials, automated tools, configuration settings, and logs are publicly held and managed at the official version-controlled project repository: \\
+\url{https://github.com}
+
+\section{Risk Assessment (Question 5.a)}
+\subsection{Identified Assets}
+\begin{itemize}
+    \item \textbf{Student Records Database:} Contains sensitive personal details, academic scores, and administrative files stored centrally.
+    \item \textbf{Central Records Server:} Core physical/virtual server architecture hosting the administrative database applications.
+    \item \textbf{Inter-Campus Network Infrastructure:} Data transmission channels routing information safely between the primary and satellite campuses.
+\end{itemize}
+
+\subsection{Vulnerabilities and Security Consequences}
+\begin{enumerate}
+    \item \textbf{Weak Staff Passwords:} Vulnerable to brute-force attacks. Compromise results in direct, unauthorized database entry and full student identity theft.
+    \item \textbf{Unencrypted Inter-Campus File Transfers:} Data is sent in plaintext. Adversaries executing man-in-the-middle attacks can easily intercept, read, or manipulate grading data mid-transit.
+    \item \textbf{Guest Network Access to the Records Server:} No internal boundaries. A rogue device on guest Wi-Fi can launch exploits against vulnerabilities in the core records machine.
+\end{enumerate}
+
+\subsection{Risk Evaluation Matrix}
+\begin{itemize}
+    \item \textbf{Risk 1 (Weak Passwords):} Likelihood: \textbf{High} $|$ Impact: \textbf{High}. External scans are already recorded by IT staff; credential cracking offers severe systemic compromise.
+    \item \textbf{Risk 2 (Guest Access):} Likelihood: \textbf{Medium} $|$ Impact: \textbf{High}. Bypasses outer security boundaries immediately but requires physical campus proximity.
+    \item \textbf{Risk 3 (Plaintext Transfers):} Likelihood: \textbf{Medium} $|$ Impact: \textbf{Medium}. Exposes files dynamically during network movement but does not offer total root console control.
+\end{itemize}
+
+\subsection{Recommended Countermeasures}
+\begin{itemize}
+    \item \textbf{Credential Control:} Enforce a strict password complexity rule combined with mandatory \textbf{Multi-Factor Authentication (MFA)}.
+    \item \textbf{Network Control:} Execute definitive \textbf{Network Segmentation} to isolate guest access spaces from production zones.
+    \item \textbf{Transit Control:} Enforce secure cryptographic wrapping utilizing \textbf{SFTP} or end-to-end \textbf{VPN tunnels}.
+\end{itemize}
+
+\newpage
+\section{Encryption and Integrity System (Question 5.b)}
+To secure raw local assets, a custom Python implementation utilizes symmetric encryption mechanisms alongside strong cryptographic hashes to enforce structural document integrity. 
+
+\subsection{Functional Toolkit Design}
+\begin{itemize}
+    \item \textbf{Encryption Strategy:} Implements \texttt{Fernet} symmetric encryption via the Python standard \texttt{cryptography} library, ensuring AES-128 standard cipher-block security.
+    \item \textbf{Key Safety Handling:} Keys are generated dynamically and saved exclusively locally in a \texttt{secret.key} token file. This token is actively masked from network repositories using custom \texttt{.gitignore} directives.
+    \item \textbf{Integrity Protection:} Computes standard \textbf{SHA-256} hex digests before and after transit states to verify bit-by-bit accuracy.
+    \item \textbf{Fault Resilience:} Fully encapsulated with robust \texttt{try-except} error-interception pathways to catch missing assets gracefully without crashing.
+\end{itemize}
+
+\section{Traffic Filtering Configurations and Test Logs (Question 5.c)}
+Firewall control parameters were constructed and verified inside the laboratory environment using the standard Linux \texttt{iptables} architecture.
+
+\subsection{Applied Firewall Framework}
+\begin{lstlisting}[language=bash, caption=Applied Laboratory iptables Rules]
+# Enforce safe default fallback postures
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+
+# Block untrusted guest networks from reaching records spaces
+iptables -A INPUT -s 192.168.50.0/24 -j DROP
+
+# Explicitly permit authorized staff subnets onto Secure Port 443
+iptables -A INPUT -s 10.0.10.0/24 -p tcp --dport 443 -j ACCEPT
+
+# Universal block on other traffic attempting access to port 443
+iptables -A INPUT -p tcp --dport 443 -j DROP
+\end{lstlisting}
+
+\subsection{Firewall Test Records}
+\begin{itemize}
+    \item \textbf{Test Case 1 (Permitted Link):} An authorized client request launched via \texttt{curl} inside the staff subnet reaches the endpoint smoothly, returning code \texttt{200 OK}.
+    \item \textbf{Test Case 2 (Guest Block):} A connection attempt originating from guest client terminals triggers the specific dropping rule, causing a silent network drop and terminal timeout.
+    \item \textbf{Test Case 3 (External Block):} An external packet attempting connection hits the catch-all filtering policy and is instantly dropped.
+\end{itemize}
+
+\section{Conclusion (Question 5.d)}
+This technical assessment demonstrates that multi-layered security engineering—combining clear risk identification, cryptographic file protection, and strict network-level firewall filtering—provides robust defense against modern attack pathways. By establishing this configuration framework, the institute guarantees data protection and continuous technical integrity across its systems.
+
+\end{document}
